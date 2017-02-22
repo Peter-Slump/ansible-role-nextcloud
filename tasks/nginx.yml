@@ -1,0 +1,27 @@
+---
+
+- name: Add user www-data to {{ owncloud_group }} group
+  user:
+    name: www-data
+    groups: "{{ owncloud_group }}"
+    append: True
+  notify:
+    - Restart Nginx
+
+- name: Configure Nginx
+  template:
+    src: etc/nginx/sites-available/owncloud.j2
+    dest: /etc/nginx/sites-available/owncloud
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Reload Nginx
+
+- name: Enable Owncloud site configuration
+  file:
+    src: /etc/nginx/sites-available/owncloud
+    dest: /etc/nginx/sites-enabled/01-{{ owncloud_hostname }}
+    state: link
+  notify:
+    - Reload Nginx

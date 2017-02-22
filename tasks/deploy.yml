@@ -1,0 +1,61 @@
+---
+
+- name: Create ownCloud data directory
+  file:
+    path: "{{ owncloud_data_path }}"
+    state: directory
+    owner: "{{ owncloud_user }}"
+    group: "{{ owncloud_group }}"
+    mode: 0770
+
+- name: Create ownCloud deployment directory
+  file:
+    path: "{{ owncloud_deploy_path }}"
+    state: directory
+    owner: "{{ owncloud_user }}"
+    group: "{{ owncloud_group }}"
+    mode: 0771
+
+# validate_certs: no: get_url doesn't understand SSL SAN
+- name: Download the OwnCloud installation package
+  get_url:
+    url: "{{ owncloud_download_url }}"
+    validate_certs: no
+    dest: "/tmp/owncloud-{{ owncloud_version }}.tar.bz2"
+    sha256sum: "{{ owncloud_sha256sum }}"
+  become_user: '{{ owncloud_user }}'
+
+- name: Unarchive OwnCloud to deployment directory
+  unarchive:
+    src: /tmp/owncloud-{{ owncloud_version }}.tar.bz2
+    dest: '{{ owncloud_deploy_path }}'
+    copy: False
+    owner: root
+    group: "{{ owncloud_group }}"
+    mode: 'u+rwX,g-w,o-rwx'
+    creates: '{{ owncloud_deploy_path }}/owncloud/version.php'
+
+- name: Make {{ owncloud_user }} owner some folders
+  file:
+    path: '{{ item }}'
+    owner: "{{ owncloud_user }}"
+    group: "{{ owncloud_group }}"
+    mode: 'u+rwX,g-w,o-rwx'
+    recurse: True
+    state: directory
+  with_items:
+    - '{{ owncloud_deploy_path }}/owncloud/apps/'
+    - '{{ owncloud_deploy_path }}/owncloud/config/'
+    - '{{ owncloud_deploy_path }}/owncloud/data/'
+    - '{{ owncloud_deploy_path }}/owncloud/themes/'
+    - '{{ owncloud_deploy_path }}/owncloud/assets/'
+
+- name: Set correct permissions for .htaccess files
+  file:
+    path: '{{ item }}'
+    owner: root
+    group: "{{ owncloud_group }}"
+    mode: 0644
+    state: file
+  with_items:
+    - '{{ owncloud_deploy_path }}/owncloud/.htaccess'

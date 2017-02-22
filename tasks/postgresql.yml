@@ -1,0 +1,15 @@
+---
+
+- name: Create ownCloud PostgreSQL role
+  postgresql_user:
+    name: "{{ owncloud_dbuser }}"
+    password: "{{ owncloud_dbpass }}"
+    state: present
+  become_user: postgres
+
+- name: Create ownCloud database
+  postgresql_db:
+    name: "{{ owncloud_dbname }}"
+    owner: "{{ owncloud_dbuser }}"
+    state: present
+  become_user: postgres

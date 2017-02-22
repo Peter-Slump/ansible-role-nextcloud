@@ -1,0 +1,47 @@
+---
+
+dependencies:
+  - src: https://github.com/Peter-Slump/ansible-role-nginx.git
+    version: 0.0.2
+    scm: git
+    name: nginx
+  - src: https://github.com/Peter-Slump/ansible-role-postgresql.git
+    version: 0.0.1
+    scm: git
+    name: postgresql
+  - src: https://github.com/Peter-Slump/ansible-role-php-fpm.git
+    version: 0.0.1
+    scm: git
+    name: php-fpm
+
+  - role: nginx
+    nginx_ssl_hostname: "{{ owncloud_hostname }}"
+    nginx_use_letsencrypt: "{{ owncloud_use_letsencrypt }}"
+    nginx_use_self_signed_ssl: "{{ owncloud_use_self_signed_ssl }}"
+  - role: postgresql
+  - role: php-fpm
+    php_fpm_additional_packages:
+      - openssl
+      - php7.0-curl
+      - php7.0-gd
+      - php-imagick
+      - php7.0-intl
+      - php7.0-json
+      - php7.0-mcrypt
+      - php7.0-pgsql
+      - php7.0-imap
+      - php-memcached
+      - php-apcu
+      - php-zip
+    php_fpm_pools:
+      - name: owncloud
+        listen: '127.0.0.1:{{ owncloud_php_port }}'
+        user: '{{ owncloud_user }}'
+        group: '{{ owncloud_group }}'
+        php_value:
+          output_buffering: '{{ owncloud_php_output_buffering }}'
+          post_max_size: '{{ owncloud_upload_size }}'
+          upload_max_filesize: '{{ owncloud_upload_size }}'
+        environment:
+          PATH: "{{ ansible_env.PATH }}"
+          HOSTNAME: "{{ ansible_hostname }}"

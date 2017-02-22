@@ -1,0 +1,50 @@
+<?php
+/* This file is maintained by Ansible all changes will be overwritten. */
+
+$AUTOCONFIG = array(
+  'passwordsalt'  => '{{ owncloud_config_passwordsalt }}',
+  'secret'        => '{{ owncloud_config_secret }}',
+
+  'dbtype'        => 'pgsql',
+  'dbname'        => '{{ owncloud_config_dbname }}',
+  'dbuser'        => '{{ owncloud_config_dbuser }}',
+  'dbpass'        => '{{ owncloud_config_dbpassword }}',
+  'dbhost'        => '{{ owncloud_config_dbhost }}',
+  'dbtableprefix' => '',
+  'adminlogin'    => '{{ owncloud_config_adminlogin }}',
+  'adminpass'     => '{{ owncloud_config_adminpass}}',
+  'directory'     => '{{ owncloud_config_datadirectory }}',
+
+  'logtimezone' => 'UTC',
+
+  'overwrite.cli.url' => '{{ owncloud_config_overwrite_cli_url }}',
+
+  'memcache.local' => '\OC\Memcache\APCu',
+  'memcache.distributed' => '\OC\Memcache\Memcached',
+  'memcached_servers' => array(
+     array('localhost', 11211),
+  ),
+
+  'asset-pipeline.enabled' => true,
+
+  /* Force use of HTTPS connection (true = use HTTPS) */
+  'forcessl' => true,
+
+  /* List of trusted domains, to prevent host header poisoning ownCloud is only using these Host headers */
+  'trusted_domains' => array(
+  {% for trusted_domain in owncloud_config_trusted_domains %}
+    {{ loop.index0 }} => '{{ trusted_domain }}',
+  {% endfor %}),
+
+  {% if owncloud_config_user_auth_backends_imap is defined and owncloud_config_user_auth_backends_imap %}
+  "user_backends" => array (
+    0 => array (
+      "class"     => "OC_User_IMAP",
+      "arguments" => array (
+        0 => '{{ "{" }}{{ owncloud_config_user_auth_backends_imap }}{{ "}" }}'
+      ),
+    ),
+  ),
+  {% endif %}
+
+);

@@ -1,0 +1,36 @@
+---
+
+- name: Setup cron service
+  cron:
+    name: 'ownCloud Background Jobs'
+    minute: "{{ owncloud_cron_minute }}"
+    user: "{{ owncloud_user }}"
+    job: '/usr/bin/php -f {{ owncloud_deploy_path }}/owncloud/cron.php'
+    cron_file: 'owncloud'
+
+- name: Setup logrotate for ownCloud
+  template:
+    src: etc/logrotate.d/owncloud.j2
+    dest: /etc/logrotate.d/owncloud
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Check if ownCloud is already configured
+  stat:
+    path: "{{ owncloud_deploy_path }}/owncloud/config/config.php"
+  register: owncloud_config_stat
+
+# If no config is available create the autoconfig
+- name: Create autoconfig
+  template:
+    src: owncloud/autoconfig.php.j2
+    dest: "{{ owncloud_deploy_path }}/owncloud/config/autoconfig.php"
+    owner: "{{ owncloud_user }}"
+    group: "{{ owncloud_group }}"
+    mode: 0640
+  when: owncloud_config_stat.stat.exists ==  False
+
+# If the config is available update it
+- include: rebuild_config.yml
+  when: owncloud_config_stat.stat.exists ==  True

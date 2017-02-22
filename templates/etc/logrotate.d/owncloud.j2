@@ -1,0 +1,11 @@
+# This file is maintained by Ansible all changes will be overwritten.
+
+{{ owncloud_data_path }}/owncloud.log {
+	rotate 12
+	weekly
+	missingok
+	notifempty
+	compress
+	su {{ owncloud_user }} {{ owncloud_group }}
+	delaycompress
+}

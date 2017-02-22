@@ -1,0 +1,29 @@
+---
+
+- name: Create group
+  group:
+    name: "{{ owncloud_group }}"
+    system: yes
+    state: present
+
+- name: Create user
+  user:
+    name: "{{ owncloud_user }}"
+    group: "{{ owncloud_group }}"
+    home: "{{ owncloud_home }}"
+    shell: /bin/sh
+    comment: "OwnCloud"
+    system: yes
+    state: present
+
+- name: Install Required packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - memcached
+
+- include: deploy.yml
+- include: postgresql.yml
+- include: config.yml
+- include: nginx.yml
