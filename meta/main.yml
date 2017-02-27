@@ -19,6 +19,9 @@ dependencies:
     nginx_use_letsencrypt: "{{ owncloud_use_letsencrypt }}"
     nginx_use_self_signed_ssl: "{{ owncloud_use_self_signed_ssl }}"
   - role: postgresql
+    when: owncloud_db_type == 'postgresql'
+  - role: mariadb
+    when: owncloud_db_type == 'mariadb'
   - role: php-fpm
     php_fpm_additional_packages:
       - openssl

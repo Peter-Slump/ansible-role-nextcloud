@@ -5,7 +5,7 @@ $AUTOCONFIG = array(
   'passwordsalt'  => '{{ owncloud_config_passwordsalt }}',
   'secret'        => '{{ owncloud_config_secret }}',
 
-  'dbtype'        => 'pgsql',
+  'dbtype'        => {% if owncloud_db_type == 'postgresql' %}'pgsql'{% elseif owncloud_db_type == 'mariadb' %}'mysql'{% endif %},
   'dbname'        => '{{ owncloud_config_dbname }}',
   'dbuser'        => '{{ owncloud_config_dbuser }}',
   'dbpass'        => '{{ owncloud_config_dbpassword }}',

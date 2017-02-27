@@ -24,6 +24,12 @@
     - memcached
 
 - include: deploy.yml
+
 - include: postgresql.yml
+  when: owncloud_db_type == 'postgresql'
+
+- include: mariadb.yml
+  when: owncloud_db_type == 'mariadb'
+
 - include: config.yml
 - include: nginx.yml

@@ -1,8 +1,8 @@
 ---
 
-owncloud_version: '9.1.4'
-owncloud_sha256sum: '1bf62c5e665a98f8c82fbeb2fcc5d2aa2bd3157b0cad2a93000a8d72114ca547'
-owncloud_download_url: https://download.owncloud.org/community/owncloud-{{ owncloud_version }}.tar.bz2
+owncloud_version: '11.0.2'
+owncloud_sha256sum: '5d1ef19d8f1f340b46c05ba3741dcb043dfc84fc3b9e2cfce1409c71a89b8700'
+owncloud_download_url: https://download.nextcloud.com/server/releases/nextcloud-{{ owncloud_version }}.tar.bz2
 
 owncloud_group: owncloud
 owncloud_user: owncloud
@@ -52,3 +52,5 @@ owncloud_php_output_buffering: '128'
 
 # Max children processes to run in php-fpm
 owncloud_php_max_children: '50'
+
+owncloud_db_type: 'mariadb'  # mariadb | postgresql

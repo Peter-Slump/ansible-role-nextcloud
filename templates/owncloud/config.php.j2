@@ -8,7 +8,7 @@ $CONFIG = array (
 
   'datadirectory' => '{{ owncloud_config_datadirectory }}',
   'overwrite.cli.url' => '{{ owncloud_config_overwrite_cli_url }}',
-  'dbtype' => 'pgsql',
+  'dbtype' => {% if owncloud_db_type == 'postgresql' %}'pgsql'{% elseif owncloud_db_type == 'mariadb' %}'mysql'{% endif %},
   'version' => '{{ owncloud_config_version.stdout }}',
   'dbname' => '{{ owncloud_config_dbname }}',
   'dbhost' => '{{ owncloud_config_dbhost }}',
