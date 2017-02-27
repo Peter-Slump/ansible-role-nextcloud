@@ -2,17 +2,17 @@
 
 - name: Create group
   group:
-    name: "{{ owncloud_group }}"
+    name: "{{ nextcloud_group }}"
     system: yes
     state: present
 
 - name: Create user
   user:
-    name: "{{ owncloud_user }}"
-    group: "{{ owncloud_group }}"
-    home: "{{ owncloud_home }}"
+    name: "{{ nextcloud_user }}"
+    group: "{{ nextcloud_group }}"
+    home: "{{ nextcloud_home }}"
     shell: /bin/sh
-    comment: "OwnCloud"
+    comment: "nextcloud"
     system: yes
     state: present
 
@@ -26,10 +26,10 @@
 - include: deploy.yml
 
 - include: postgresql.yml
-  when: owncloud_db_type == 'postgresql'
+  when: nextcloud_db_type == 'postgresql'
 
 - include: mariadb.yml
-  when: owncloud_db_type == 'mariadb'
+  when: nextcloud_db_type == 'mariadb'
 
 - include: config.yml
 - include: nginx.yml

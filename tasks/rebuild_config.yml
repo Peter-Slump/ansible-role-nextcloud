@@ -1,19 +1,19 @@
 ---
 
 # First retrieve some settings from the config file
-- name: Owncloud retrieve instanceid from config.
-  shell: "cat {{owncloud_deploy_path }}/owncloud/config/config.php | grep instanceid | awk -F \\' '{ print $4 }'"
-  register: owncloud_config_instanceid
+- name: nextcloud retrieve instanceid from config.
+  shell: "cat {{nextcloud_deploy_path }}/nextcloud/config/config.php | grep instanceid | awk -F \\' '{ print $4 }'"
+  register: nextcloud_config_instanceid
 
-- name: Owncloud retrieve version from config.
-  shell: "cat {{owncloud_deploy_path }}/owncloud/config/config.php | grep version | awk -F \\' '{ print $4 }'"
-  register: owncloud_config_version
+- name: nextcloud retrieve version from config.
+  shell: "cat {{nextcloud_deploy_path }}/nextcloud/config/config.php | grep version | awk -F \\' '{ print $4 }'"
+  register: nextcloud_config_version
 
 # Update config file
 - name: Update configuration
   template:
-    src: owncloud/config.php.j2
-    dest: "{{ owncloud_deploy_path }}/owncloud/config/config.php"
-    owner: "{{ owncloud_user }}"
-    group: "{{ owncloud_group }}"
+    src: nextcloud/config.php.j2
+    dest: "{{ nextcloud_deploy_path }}/nextcloud/config/config.php"
+    owner: "{{ nextcloud_user }}"
+    group: "{{ nextcloud_group }}"
     mode: 0640

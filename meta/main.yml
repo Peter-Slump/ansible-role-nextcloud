@@ -15,13 +15,13 @@ dependencies:
     name: php-fpm
 
   - role: nginx
-    nginx_ssl_hostname: "{{ owncloud_hostname }}"
-    nginx_use_letsencrypt: "{{ owncloud_use_letsencrypt }}"
-    nginx_use_self_signed_ssl: "{{ owncloud_use_self_signed_ssl }}"
+    nginx_ssl_hostname: "{{ nextcloud_hostname }}"
+    nginx_use_letsencrypt: "{{ nextcloud_use_letsencrypt }}"
+    nginx_use_self_signed_ssl: "{{ nextcloud_use_self_signed_ssl }}"
   - role: postgresql
-    when: owncloud_db_type == 'postgresql'
+    when: nextcloud_db_type == 'postgresql'
   - role: mariadb
-    when: owncloud_db_type == 'mariadb'
+    when: nextcloud_db_type == 'mariadb'
   - role: php-fpm
     php_fpm_additional_packages:
       - openssl
@@ -37,14 +37,14 @@ dependencies:
       - php-apcu
       - php-zip
     php_fpm_pools:
-      - name: owncloud
-        listen: '127.0.0.1:{{ owncloud_php_port }}'
-        user: '{{ owncloud_user }}'
-        group: '{{ owncloud_group }}'
+      - name: nextcloud
+        listen: '127.0.0.1:{{ nextcloud_php_port }}'
+        user: '{{ nextcloud_user }}'
+        group: '{{ nextcloud_group }}'
         php_value:
-          output_buffering: '{{ owncloud_php_output_buffering }}'
-          post_max_size: '{{ owncloud_upload_size }}'
-          upload_max_filesize: '{{ owncloud_upload_size }}'
+          output_buffering: '{{ nextcloud_php_output_buffering }}'
+          post_max_size: '{{ nextcloud_upload_size }}'
+          upload_max_filesize: '{{ nextcloud_upload_size }}'
         environment:
           PATH: "{{ ansible_env.PATH }}"
           HOSTNAME: "{{ ansible_hostname }}"

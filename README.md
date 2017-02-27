@@ -1,10 +1,10 @@
-# Ansible role Owncloud
+# Ansible role nextcloud
 
 Version: 0.0.2
 
 Supported OS: Ubuntu
 
-Ansible role Owncloud
+Ansible role nextcloud
 
 - Uses PostgreSQL as database
 - Runs in an own PHP pool
@@ -12,64 +12,64 @@ Ansible role Owncloud
 ## Role variables
 ```
 
-owncloud_version: '9.1.4'
-owncloud_sha256sum: '1bf62c5e665a98f8c82fbeb2fcc5d2aa2bd3157b0cad2a93000a8d72114ca547'
-owncloud_download_url: https://download.owncloud.org/community/owncloud-{{ owncloud_version }}.tar.bz2
+nextcloud_version: '9.1.4'
+nextcloud_sha256sum: '1bf62c5e665a98f8c82fbeb2fcc5d2aa2bd3157b0cad2a93000a8d72114ca547'
+nextcloud_download_url: https://download.nextcloud.org/community/nextcloud-{{ nextcloud_version }}.tar.bz2
 
-owncloud_group: owncloud
-owncloud_user: owncloud
-owncloud_home: /home/{{ owncloud_user }}
+nextcloud_group: nextcloud
+nextcloud_user: nextcloud
+nextcloud_home: /home/{{ nextcloud_user }}
 
-owncloud_data_path: /var/data/owncloud/{{ owncloud_user }}/
-owncloud_deploy_path: '{{ owncloud_home }}'
+nextcloud_data_path: /var/data/nextcloud/{{ nextcloud_user }}/
+nextcloud_deploy_path: '{{ nextcloud_home }}'
 
-owncloud_dbname: '{{ owncloud_user }}'
-owncloud_dbuser: '{{ owncloud_user }}'
-owncloud_dbhost: 'localhost'
-owncloud_dbpass: 'ChangeMe'
+nextcloud_dbname: '{{ nextcloud_user }}'
+nextcloud_dbuser: '{{ nextcloud_user }}'
+nextcloud_dbhost: 'localhost'
+nextcloud_dbpass: 'ChangeMe'
 
-owncloud_hostname: owncloud.example.com
+nextcloud_hostname: nextcloud.example.com
 
-owncloud_use_self_signed_ssl: False
-owncloud_use_letsencrypt: False
+nextcloud_use_self_signed_ssl: False
+nextcloud_use_letsencrypt: False
 
 # Config settings
 # The following settings should be supplied in a secure way:
-owncloud_config_passwordsalt: 'NotVerySecretPasswordSalt'
-# owncloud_config_passwordsalt: ' **  Some secret salt ** '
-owncloud_config_secret: 'NotVerySecretConfigSecret'
-# owncloud_config_secret: ' ** Some secret ** '
-# owncloud_config_adminpass: ' ** Some secret password for the admin user ** '
-owncloud_config_adminpass: 'NotVerySecretAdminPassword'
-owncloud_config_adminlogin: 'admin'
+nextcloud_config_passwordsalt: 'NotVerySecretPasswordSalt'
+# nextcloud_config_passwordsalt: ' **  Some secret salt ** '
+nextcloud_config_secret: 'NotVerySecretConfigSecret'
+# nextcloud_config_secret: ' ** Some secret ** '
+# nextcloud_config_adminpass: ' ** Some secret password for the admin user ** '
+nextcloud_config_adminpass: 'NotVerySecretAdminPassword'
+nextcloud_config_adminlogin: 'admin'
 
-owncloud_config_trusted_domains: [ "{{ owncloud_hostname }}" ]
-owncloud_config_datadirectory: "{{ owncloud_data_path }}"
-owncloud_config_overwrite_cli_url: "https://{{ owncloud_hostname }}"
-owncloud_config_dbname: "{{ owncloud_dbname }}"
-owncloud_config_dbuser: "{{ owncloud_dbuser }}"
-owncloud_config_dbpassword: "{{ owncloud_dbpass }}"
-owncloud_config_dbhost: "{{ owncloud_dbhost }}"
+nextcloud_config_trusted_domains: [ "{{ nextcloud_hostname }}" ]
+nextcloud_config_datadirectory: "{{ nextcloud_data_path }}"
+nextcloud_config_overwrite_cli_url: "https://{{ nextcloud_hostname }}"
+nextcloud_config_dbname: "{{ nextcloud_dbname }}"
+nextcloud_config_dbuser: "{{ nextcloud_dbuser }}"
+nextcloud_config_dbpassword: "{{ nextcloud_dbpass }}"
+nextcloud_config_dbhost: "{{ nextcloud_dbhost }}"
 
-owncloud_php_port: 9001
+nextcloud_php_port: 9001
 
 # At what time cron should execute background jobs
-owncloud_cron_minute: '*/15'
+nextcloud_cron_minute: '*/15'
 
 # Max upload size set in Nginx and PHP7.0, with amount as M or G
-owncloud_upload_size: '10G'
+nextcloud_upload_size: '10G'
 
 # Output buffering set in PHP 7.0, with amount set in megabytes
-owncloud_php_output_buffering: '128'
+nextcloud_php_output_buffering: '128'
 
 # Max children processes to run in php-fpm
-owncloud_php_max_children: '50'
+nextcloud_php_max_children: '50'
 ```
 
 ## Example
 ```
 - hosts: all
   roles:
-   - role: owncloud
-     owncloud_hostname: owncloud.example.com
+   - role: nextcloud
+     nextcloud_hostname: nextcloud.example.com
 ```

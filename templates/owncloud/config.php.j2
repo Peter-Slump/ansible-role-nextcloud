@@ -2,19 +2,19 @@
 /* This file is maintained by Ansible all changes will be overwritten. */
 
 $CONFIG = array (
-  'instanceid' => '{{ owncloud_config_instanceid.stdout }}',
-  'passwordsalt' => '{{ owncloud_config_passwordsalt }}',
-  'secret' => '{{ owncloud_config_secret }}',
+  'instanceid' => '{{ nextcloud_config_instanceid.stdout }}',
+  'passwordsalt' => '{{ nextcloud_config_passwordsalt }}',
+  'secret' => '{{ nextcloud_config_secret }}',
 
-  'datadirectory' => '{{ owncloud_config_datadirectory }}',
-  'overwrite.cli.url' => '{{ owncloud_config_overwrite_cli_url }}',
-  'dbtype' => {% if owncloud_db_type == 'postgresql' %}'pgsql'{% elseif owncloud_db_type == 'mariadb' %}'mysql'{% endif %},
-  'version' => '{{ owncloud_config_version.stdout }}',
-  'dbname' => '{{ owncloud_config_dbname }}',
-  'dbhost' => '{{ owncloud_config_dbhost }}',
+  'datadirectory' => '{{ nextcloud_config_datadirectory }}',
+  'overwrite.cli.url' => '{{ nextcloud_config_overwrite_cli_url }}',
+  'dbtype' => {% if nextcloud_db_type == 'postgresql' %}'pgsql'{% elseif nextcloud_db_type == 'mariadb' %}'mysql'{% endif %},
+  'version' => '{{ nextcloud_config_version.stdout }}',
+  'dbname' => '{{ nextcloud_config_dbname }}',
+  'dbhost' => '{{ nextcloud_config_dbhost }}',
   'dbtableprefix' => '',
-  'dbuser' => '{{ owncloud_config_dbuser }}',
-  'dbpassword' => '{{ owncloud_config_dbpassword }}',
+  'dbuser' => '{{ nextcloud_config_dbuser }}',
+  'dbpassword' => '{{ nextcloud_config_dbpassword }}',
   'logtimezone' => 'UTC',
   'installed' => true,
 
@@ -26,18 +26,18 @@ $CONFIG = array (
 
   'asset-pipeline.enabled' => true,
 
-  /* List of trusted domains, to prevent host header poisoning ownCloud is only using these Host headers */
+  /* List of trusted domains, to prevent host header poisoning nextcloud is only using these Host headers */
   'trusted_domains' => array(
-  {% for trusted_domain in owncloud_config_trusted_domains %}
+  {% for trusted_domain in nextcloud_config_trusted_domains %}
     {{ loop.index0 }} => '{{ trusted_domain }}',
   {% endfor %}),
 
-  {% if owncloud_config_user_auth_backends_imap is defined and owncloud_config_user_auth_backends_imap %}
+  {% if nextcloud_config_user_auth_backends_imap is defined and nextcloud_config_user_auth_backends_imap %}
   "user_backends" => array (
     0 => array (
       "class"     => "OC_User_IMAP",
       "arguments" => array (
-        0 => '{{ "{" }}{{ owncloud_config_user_auth_backends_imap }}{{ "}" }}'
+        0 => '{{ "{" }}{{ nextcloud_config_user_auth_backends_imap }}{{ "}" }}'
       ),
     ),
   ),

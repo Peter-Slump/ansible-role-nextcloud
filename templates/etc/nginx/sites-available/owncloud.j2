@@ -1,18 +1,18 @@
 # This file is maintained by Ansible all changes will be overwritten.
 
-upstream php-{{ owncloud_user }}-handler {
-  server 127.0.0.1:{{ owncloud_php_port }};
+upstream php-{{ nextcloud_user }}-handler {
+  server 127.0.0.1:{{ nextcloud_php_port }};
   #server unix:/var/run/php5-fpm.sock;
 }
 
-{% if owncloud_use_letsencrypt or owncloud_use_self_signed_ssl %}
+{% if nextcloud_use_letsencrypt or nextcloud_use_self_signed_ssl %}
 server {
     listen 80;
     listen [::]:80;
 
-    server_name {{ owncloud_hostname }};
+    server_name {{ nextcloud_hostname }};
 
-    {% if owncloud_use_letsencrypt %}
+    {% if nextcloud_use_letsencrypt %}
     location '/.well-known/acme-challenge' {
         root {{ nginx_letsencrypt_webroot }};
     }
@@ -26,9 +26,9 @@ server {
 {% endif %}
 
 server {
-  server_name {{ owncloud_hostname }};
+  server_name {{ nextcloud_hostname }};
 
-  {% if owncloud_use_letsencrypt or owncloud_use_self_signed_ssl %}
+  {% if nextcloud_use_letsencrypt or nextcloud_use_self_signed_ssl %}
   listen 443 ssl;
   listen [::]:443 ssl;
 
@@ -41,16 +41,16 @@ server {
   listen [::]:80;
   {% endif %}
 
-  {% if owncloud_use_self_signed_ssl %}
-  ssl_certificate /usr/local/share/ca-certificates/{{ owncloud_hostname }}.crt;
-  ssl_certificate_key /etc/ssl/private/{{ owncloud_hostname }}.key;
-  {% elif owncloud_use_letsencrypt %}
-  ssl_certificate /etc/letsencrypt/live/{{ owncloud_hostname }}/fullchain.pem;
-  ssl_certificate_key /etc/letsencrypt/live/{{ owncloud_hostname }}/privkey.pem;
+  {% if nextcloud_use_self_signed_ssl %}
+  ssl_certificate /usr/local/share/ca-certificates/{{ nextcloud_hostname }}.crt;
+  ssl_certificate_key /etc/ssl/private/{{ nextcloud_hostname }}.key;
+  {% elif nextcloud_use_letsencrypt %}
+  ssl_certificate /etc/letsencrypt/live/{{ nextcloud_hostname }}/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/{{ nextcloud_hostname }}/privkey.pem;
   {% endif %}
 
-  access_log /var/log/nginx/{{ owncloud_hostname }}.access.log combined;
-  error_log /var/log/nginx/{{ owncloud_hostname }}.error.log;
+  access_log /var/log/nginx/{{ nextcloud_hostname }}.access.log combined;
+  error_log /var/log/nginx/{{ nextcloud_hostname }}.error.log;
 
   # Add headers to serve security related headers
   add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;";
@@ -62,9 +62,9 @@ server {
   add_header X-Permitted-Cross-Domain-Policies none;
 
   # Path to the root of your installation
-  root {{ owncloud_deploy_path }}/owncloud;
+  root {{ nextcloud_deploy_path }}/nextcloud;
   # set max upload size
-  client_max_body_size {{ owncloud_upload_size }};
+  client_max_body_size {{ nextcloud_upload_size }};
   fastcgi_buffers 64 4K;
 
   # Disable gzip to avoid the removal of the ETag header
@@ -116,7 +116,7 @@ server {
     fastcgi_param PATH_INFO $fastcgi_path_info;
     fastcgi_param HTTPS on;
     fastcgi_param modHeadersAvailable true; #Avoid sending the security headers twice
-    fastcgi_pass php-{{ owncloud_user }}-handler;
+    fastcgi_pass php-{{ nextcloud_user }}-handler;
     fastcgi_intercept_errors on;
   }
 

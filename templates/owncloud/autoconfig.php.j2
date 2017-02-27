@@ -2,22 +2,22 @@
 /* This file is maintained by Ansible all changes will be overwritten. */
 
 $AUTOCONFIG = array(
-  'passwordsalt'  => '{{ owncloud_config_passwordsalt }}',
-  'secret'        => '{{ owncloud_config_secret }}',
+  'passwordsalt'  => '{{ nextcloud_config_passwordsalt }}',
+  'secret'        => '{{ nextcloud_config_secret }}',
 
-  'dbtype'        => {% if owncloud_db_type == 'postgresql' %}'pgsql'{% elseif owncloud_db_type == 'mariadb' %}'mysql'{% endif %},
-  'dbname'        => '{{ owncloud_config_dbname }}',
-  'dbuser'        => '{{ owncloud_config_dbuser }}',
-  'dbpass'        => '{{ owncloud_config_dbpassword }}',
-  'dbhost'        => '{{ owncloud_config_dbhost }}',
+  'dbtype'        => {% if nextcloud_db_type == 'postgresql' %}'pgsql'{% elseif nextcloud_db_type == 'mariadb' %}'mysql'{% endif %},
+  'dbname'        => '{{ nextcloud_config_dbname }}',
+  'dbuser'        => '{{ nextcloud_config_dbuser }}',
+  'dbpass'        => '{{ nextcloud_config_dbpassword }}',
+  'dbhost'        => '{{ nextcloud_config_dbhost }}',
   'dbtableprefix' => '',
-  'adminlogin'    => '{{ owncloud_config_adminlogin }}',
-  'adminpass'     => '{{ owncloud_config_adminpass}}',
-  'directory'     => '{{ owncloud_config_datadirectory }}',
+  'adminlogin'    => '{{ nextcloud_config_adminlogin }}',
+  'adminpass'     => '{{ nextcloud_config_adminpass}}',
+  'directory'     => '{{ nextcloud_config_datadirectory }}',
 
   'logtimezone' => 'UTC',
 
-  'overwrite.cli.url' => '{{ owncloud_config_overwrite_cli_url }}',
+  'overwrite.cli.url' => '{{ nextcloud_config_overwrite_cli_url }}',
 
   'memcache.local' => '\OC\Memcache\APCu',
   'memcache.distributed' => '\OC\Memcache\Memcached',
@@ -30,18 +30,18 @@ $AUTOCONFIG = array(
   /* Force use of HTTPS connection (true = use HTTPS) */
   'forcessl' => true,
 
-  /* List of trusted domains, to prevent host header poisoning ownCloud is only using these Host headers */
+  /* List of trusted domains, to prevent host header poisoning nextcloud is only using these Host headers */
   'trusted_domains' => array(
-  {% for trusted_domain in owncloud_config_trusted_domains %}
+  {% for trusted_domain in nextcloud_config_trusted_domains %}
     {{ loop.index0 }} => '{{ trusted_domain }}',
   {% endfor %}),
 
-  {% if owncloud_config_user_auth_backends_imap is defined and owncloud_config_user_auth_backends_imap %}
+  {% if nextcloud_config_user_auth_backends_imap is defined and nextcloud_config_user_auth_backends_imap %}
   "user_backends" => array (
     0 => array (
       "class"     => "OC_User_IMAP",
       "arguments" => array (
-        0 => '{{ "{" }}{{ owncloud_config_user_auth_backends_imap }}{{ "}" }}'
+        0 => '{{ "{" }}{{ nextcloud_config_user_auth_backends_imap }}{{ "}" }}'
       ),
     ),
   ),

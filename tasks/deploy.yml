@@ -1,61 +1,61 @@
 ---
 
-- name: Create ownCloud data directory
+- name: Create nextcloud data directory
   file:
-    path: "{{ owncloud_data_path }}"
+    path: "{{ nextcloud_data_path }}"
     state: directory
-    owner: "{{ owncloud_user }}"
-    group: "{{ owncloud_group }}"
+    owner: "{{ nextcloud_user }}"
+    group: "{{ nextcloud_group }}"
     mode: 0770
 
-- name: Create ownCloud deployment directory
+- name: Create nextcloud deployment directory
   file:
-    path: "{{ owncloud_deploy_path }}"
+    path: "{{ nextcloud_deploy_path }}"
     state: directory
-    owner: "{{ owncloud_user }}"
-    group: "{{ owncloud_group }}"
+    owner: "{{ nextcloud_user }}"
+    group: "{{ nextcloud_group }}"
     mode: 0771
 
 # validate_certs: no: get_url doesn't understand SSL SAN
-- name: Download the OwnCloud installation package
+- name: Download the nextcloud installation package
   get_url:
-    url: "{{ owncloud_download_url }}"
+    url: "{{ nextcloud_download_url }}"
     validate_certs: no
-    dest: "/tmp/owncloud-{{ owncloud_version }}.tar.bz2"
-    sha256sum: "{{ owncloud_sha256sum }}"
-  become_user: '{{ owncloud_user }}'
+    dest: "/tmp/nextcloud-{{ nextcloud_version }}.tar.bz2"
+    sha256sum: "{{ nextcloud_sha256sum }}"
+  become_user: '{{ nextcloud_user }}'
 
-- name: Unarchive OwnCloud to deployment directory
+- name: Unarchive nextcloud to deployment directory
   unarchive:
-    src: /tmp/owncloud-{{ owncloud_version }}.tar.bz2
-    dest: '{{ owncloud_deploy_path }}'
+    src: /tmp/nextcloud-{{ nextcloud_version }}.tar.bz2
+    dest: '{{ nextcloud_deploy_path }}'
     copy: False
     owner: root
-    group: "{{ owncloud_group }}"
+    group: "{{ nextcloud_group }}"
     mode: 'u+rwX,g-w,o-rwx'
-    creates: '{{ owncloud_deploy_path }}/owncloud/version.php'
+    creates: '{{ nextcloud_deploy_path }}/nextcloud/version.php'
 
-- name: Make {{ owncloud_user }} owner some folders
+- name: Make {{ nextcloud_user }} owner some folders
   file:
     path: '{{ item }}'
-    owner: "{{ owncloud_user }}"
-    group: "{{ owncloud_group }}"
+    owner: "{{ nextcloud_user }}"
+    group: "{{ nextcloud_group }}"
     mode: 'u+rwX,g-w,o-rwx'
     recurse: True
     state: directory
   with_items:
-    - '{{ owncloud_deploy_path }}/owncloud/apps/'
-    - '{{ owncloud_deploy_path }}/owncloud/config/'
-    - '{{ owncloud_deploy_path }}/owncloud/data/'
-    - '{{ owncloud_deploy_path }}/owncloud/themes/'
-    - '{{ owncloud_deploy_path }}/owncloud/assets/'
+    - '{{ nextcloud_deploy_path }}/nextcloud/apps/'
+    - '{{ nextcloud_deploy_path }}/nextcloud/config/'
+    - '{{ nextcloud_deploy_path }}/nextcloud/data/'
+    - '{{ nextcloud_deploy_path }}/nextcloud/themes/'
+    - '{{ nextcloud_deploy_path }}/nextcloud/assets/'
 
 - name: Set correct permissions for .htaccess files
   file:
     path: '{{ item }}'
     owner: root
-    group: "{{ owncloud_group }}"
+    group: "{{ nextcloud_group }}"
     mode: 0644
     state: file
   with_items:
-    - '{{ owncloud_deploy_path }}/owncloud/.htaccess'
+    - '{{ nextcloud_deploy_path }}/nextcloud/.htaccess'
