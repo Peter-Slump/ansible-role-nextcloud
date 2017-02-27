@@ -2,7 +2,7 @@
 
 dependencies:
   - src: https://github.com/Peter-Slump/ansible-role-nginx.git
-    version: v0.0.4
+    version: v0.0.5
     scm: git
     name: nginx
   - src: https://github.com/Peter-Slump/ansible-role-postgresql.git
