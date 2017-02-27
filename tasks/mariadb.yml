@@ -1,0 +1,13 @@
+---
+
+- name: Create database
+  mysql_db:
+    name: "{{ owncloud_dbname }}"
+    state: present
+
+- name: Create database user
+  mysql_user:
+    name: "{{ owncloud_dbuser }}"
+    password: "{{ owncloud_dbpass }}"
+    priv: '{{ owncloud_dbname }}.*:ALL'
+    state: present
