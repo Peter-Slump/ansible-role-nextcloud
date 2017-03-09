@@ -1,0 +1,48 @@
+---
+
+- name: setup | Create group
+  group:
+    name: "{{ nextcloud_group }}"
+    system: yes
+    state: present
+  tags:
+    - nextcloud
+    - setup
+
+- name: setup | Create user
+  user:
+    name: "{{ nextcloud_user }}"
+    group: "{{ nextcloud_group }}"
+    home: "{{ nextcloud_home }}"
+    shell: /bin/sh
+    comment: "Nextcloud"
+    system: yes
+    state: present
+  tags:
+    - nextcloud
+    - setup
+
+- name: setup | Add user www-data to {{ nextcloud_group }} group
+  user:
+    name: www-data
+    groups: "{{ nextcloud_group }}"
+    append: True
+  tags:
+    - nextcloud
+    - setup
+
+- name: setup | Create nextcloud data directory
+  file:
+    path: "{{ nextcloud_data_path }}"
+    state: directory
+    owner: "{{ nextcloud_user }}"
+    group: "{{ nextcloud_group }}"
+    mode: 0770
+
+- name: setup | Create nextcloud deployment directory
+  file:
+    path: "{{ nextcloud_deploy_path }}"
+    state: directory
+    owner: "{{ nextcloud_user }}"
+    group: "{{ nextcloud_group }}"
+    mode: 0771

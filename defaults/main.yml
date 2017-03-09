@@ -11,16 +11,6 @@ nextcloud_home: /home/{{ nextcloud_user }}
 nextcloud_data_path: /var/data/nextcloud/{{ nextcloud_user }}/
 nextcloud_deploy_path: '{{ nextcloud_home }}'
 
-nextcloud_dbname: '{{ nextcloud_user }}'
-nextcloud_dbuser: '{{ nextcloud_user }}'
-nextcloud_dbhost: 'localhost'
-nextcloud_dbpass: 'ChangeMe'
-
-nextcloud_hostname: nextcloud.example.com
-
-nextcloud_use_self_signed_ssl: False
-nextcloud_use_letsencrypt: False
-
 # Config settings
 # The following settings should be supplied in a secure way:
 nextcloud_config_passwordsalt: 'NotVerySecretPasswordSalt'
@@ -34,23 +24,14 @@ nextcloud_config_adminlogin: 'admin'
 nextcloud_config_trusted_domains: [ "{{ nextcloud_hostname }}" ]
 nextcloud_config_datadirectory: "{{ nextcloud_data_path }}"
 nextcloud_config_overwrite_cli_url: "https://{{ nextcloud_hostname }}"
+nextcloud_config_dbtype: 'mysql'  # mysql | postgresql
 nextcloud_config_dbname: "{{ nextcloud_dbname }}"
 nextcloud_config_dbuser: "{{ nextcloud_dbuser }}"
 nextcloud_config_dbpassword: "{{ nextcloud_dbpass }}"
 nextcloud_config_dbhost: "{{ nextcloud_dbhost }}"
-
-nextcloud_php_port: 9001
 
 # At what time cron should execute background jobs
 nextcloud_cron_minute: '*/15'
 
 # Max upload size set in Nginx and PHP7.0, with amount as M or G
 nextcloud_upload_size: '10G'
-
-# Output buffering set in PHP 7.0, with amount set in megabytes
-nextcloud_php_output_buffering: '128'
-
-# Max children processes to run in php-fpm
-nextcloud_php_max_children: '50'
-
-nextcloud_db_type: 'mariadb'  # mariadb | postgresql

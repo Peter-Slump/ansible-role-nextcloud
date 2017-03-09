@@ -5,7 +5,7 @@ $AUTOCONFIG = array(
   'passwordsalt'  => '{{ nextcloud_config_passwordsalt }}',
   'secret'        => '{{ nextcloud_config_secret }}',
 
-  'dbtype'        => {% if nextcloud_db_type == 'postgresql' %}'pgsql'{% elseif nextcloud_db_type == 'mariadb' %}'mysql'{% endif %},
+  'dbtype'        => '{{ nextcloud_config_dbtype}}',
   'dbname'        => '{{ nextcloud_config_dbname }}',
   'dbuser'        => '{{ nextcloud_config_dbuser }}',
   'dbpass'        => '{{ nextcloud_config_dbpassword }}',

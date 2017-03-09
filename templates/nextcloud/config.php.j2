@@ -8,7 +8,7 @@ $CONFIG = array (
 
   'datadirectory' => '{{ nextcloud_config_datadirectory }}',
   'overwrite.cli.url' => '{{ nextcloud_config_overwrite_cli_url }}',
-  'dbtype' => {% if nextcloud_db_type == 'postgresql' %}'pgsql'{% elseif nextcloud_db_type == 'mariadb' %}'mysql'{% endif %},
+  'dbtype' => '{{ nextcloud_config_dbtype }}',
   'version' => '{{ nextcloud_config_version.stdout }}',
   'dbname' => '{{ nextcloud_config_dbname }}',
   'dbhost' => '{{ nextcloud_config_dbhost }}',
@@ -25,6 +25,24 @@ $CONFIG = array (
   ),
 
   'asset-pipeline.enabled' => true,
+
+{% if nextcloud_s3_enabled %}
+  'objectstore' => array(
+          'class' => 'OC\\Files\\ObjectStore\\S3',
+          'arguments' => array(
+                  'bucket' => '{% nextcloud_s3_bucket %}',
+                  'autocreate' => true,
+                  'key'    => '{% nextcloud_s3_key %}',
+                  'secret' => '{% nextcloud_s3_secret %}',
+                  'hostname' => '{% nextcloud_s3_hostname %}',
+                  'port' => 1234,
+                  'use_ssl' => true,
+                  'region' => 'optional',
+                  // required for some non amazon s3 implementations
+                  'use_path_style'=>true
+          ),
+  ),
+{% endif %}
 
   /* List of trusted domains, to prevent host header poisoning nextcloud is only using these Host headers */
   'trusted_domains' => array(

@@ -1,31 +1,28 @@
 ---
 
-- name: Create nextcloud data directory
-  file:
-    path: "{{ nextcloud_data_path }}"
-    state: directory
-    owner: "{{ nextcloud_user }}"
-    group: "{{ nextcloud_group }}"
-    mode: 0770
-
-- name: Create nextcloud deployment directory
-  file:
-    path: "{{ nextcloud_deploy_path }}"
-    state: directory
-    owner: "{{ nextcloud_user }}"
-    group: "{{ nextcloud_group }}"
-    mode: 0771
+- name: deploy | Install Required packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - memcached
+  tags:
+    - nextcloud
+    - deploy
 
 # validate_certs: no: get_url doesn't understand SSL SAN
-- name: Download the nextcloud installation package
+- name: deploy | Download the nextcloud installation package
   get_url:
     url: "{{ nextcloud_download_url }}"
     validate_certs: no
     dest: "/tmp/nextcloud-{{ nextcloud_version }}.tar.bz2"
     sha256sum: "{{ nextcloud_sha256sum }}"
   become_user: '{{ nextcloud_user }}'
+  tags:
+    - nextcloud
+    - deploy
 
-- name: Unarchive nextcloud to deployment directory
+- name: deploy | Unarchive nextcloud to deployment directory
   unarchive:
     src: /tmp/nextcloud-{{ nextcloud_version }}.tar.bz2
     dest: '{{ nextcloud_deploy_path }}'
@@ -34,8 +31,11 @@
     group: "{{ nextcloud_group }}"
     mode: 'u+rwX,g-w,o-rwx'
     creates: '{{ nextcloud_deploy_path }}/nextcloud/version.php'
+  tags:
+    - nextcloud
+    - deploy
 
-- name: Make {{ nextcloud_user }} owner some folders
+- name: deploy | Make {{ nextcloud_user }} owner some folders
   file:
     path: '{{ item }}'
     owner: "{{ nextcloud_user }}"
@@ -49,8 +49,11 @@
     - '{{ nextcloud_deploy_path }}/nextcloud/data/'
     - '{{ nextcloud_deploy_path }}/nextcloud/themes/'
     - '{{ nextcloud_deploy_path }}/nextcloud/assets/'
+  tags:
+    - nextcloud
+    - deploy
 
-- name: Set correct permissions for .htaccess files
+- name: deploy | Set correct permissions for .htaccess files
   file:
     path: '{{ item }}'
     owner: root
@@ -59,3 +62,6 @@
     state: file
   with_items:
     - '{{ nextcloud_deploy_path }}/nextcloud/.htaccess'
+  tags:
+    - nextcloud
+    - deploy

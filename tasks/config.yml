@@ -1,28 +1,37 @@
 ---
 
-- name: Setup cron service
+- name: config | Setup cron service
   cron:
     name: 'nextcloud Background Jobs'
     minute: "{{ nextcloud_cron_minute }}"
     user: "{{ nextcloud_user }}"
     job: '/usr/bin/php -f {{ nextcloud_deploy_path }}/nextcloud/cron.php'
     cron_file: 'nextcloud'
+  tags:
+    - nextcloud
+    - config
 
-- name: Setup logrotate for nextcloud
+- name: config | Setup logrotate for nextcloud
   template:
     src: etc/logrotate.d/nextcloud.j2
     dest: /etc/logrotate.d/nextcloud
     owner: root
     group: root
     mode: 0644
+  tags:
+    - nextcloud
+    - config
 
-- name: Check if nextcloud is already configured
+- name: config | Check if nextcloud is already configured
   stat:
     path: "{{ nextcloud_deploy_path }}/nextcloud/config/config.php"
   register: nextcloud_config_stat
+  tags:
+    - nextcloud
+    - config
 
 # If no config is available create the autoconfig
-- name: Create autoconfig
+- name: config | Create autoconfig
   template:
     src: nextcloud/autoconfig.php.j2
     dest: "{{ nextcloud_deploy_path }}/nextcloud/config/autoconfig.php"
@@ -30,7 +39,13 @@
     group: "{{ nextcloud_group }}"
     mode: 0640
   when: nextcloud_config_stat.stat.exists ==  False
+  tags:
+    - nextcloud
+    - config
 
 # If the config is available update it
 - include: rebuild_config.yml
   when: nextcloud_config_stat.stat.exists ==  True
+  tags:
+    - nextcloud
+    - config
