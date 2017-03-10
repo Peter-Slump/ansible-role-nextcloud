@@ -8,7 +8,7 @@ nextcloud_group: nextcloud
 nextcloud_user: nextcloud
 nextcloud_home: /home/{{ nextcloud_user }}
 
-nextcloud_data_path: /var/data/nextcloud/{{ nextcloud_user }}/
+nextcloud_data_path: "/var/data/nextcloud/{{ nextcloud_user }}/"
 nextcloud_deploy_path: '{{ nextcloud_home }}'
 
 # Config settings
@@ -21,14 +21,16 @@ nextcloud_config_secret: 'NotVerySecretConfigSecret'
 nextcloud_config_adminpass: 'NotVerySecretAdminPassword'
 nextcloud_config_adminlogin: 'admin'
 
+nextcloud_hostname: nextcloud.example.com
+
 nextcloud_config_trusted_domains: [ "{{ nextcloud_hostname }}" ]
 nextcloud_config_datadirectory: "{{ nextcloud_data_path }}"
 nextcloud_config_overwrite_cli_url: "https://{{ nextcloud_hostname }}"
 nextcloud_config_dbtype: 'mysql'  # mysql | postgresql
-nextcloud_config_dbname: "{{ nextcloud_dbname }}"
-nextcloud_config_dbuser: "{{ nextcloud_dbuser }}"
-nextcloud_config_dbpassword: "{{ nextcloud_dbpass }}"
-nextcloud_config_dbhost: "{{ nextcloud_dbhost }}"
+nextcloud_config_dbname: "nextcloud"
+nextcloud_config_dbuser: "{{ nextcloud_user }}"
+nextcloud_config_dbpass: "ChangeMe!!!11"
+nextcloud_config_dbhost: "localhost"
 
 # At what time cron should execute background jobs
 nextcloud_cron_minute: '*/15'

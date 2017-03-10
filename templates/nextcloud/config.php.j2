@@ -14,7 +14,7 @@ $CONFIG = array (
   'dbhost' => '{{ nextcloud_config_dbhost }}',
   'dbtableprefix' => '',
   'dbuser' => '{{ nextcloud_config_dbuser }}',
-  'dbpassword' => '{{ nextcloud_config_dbpassword }}',
+  'dbpassword' => '{{ nextcloud_config_dbpass }}',
   'logtimezone' => 'UTC',
   'installed' => true,
 
@@ -26,15 +26,15 @@ $CONFIG = array (
 
   'asset-pipeline.enabled' => true,
 
-{% if nextcloud_s3_enabled %}
+{% if nextcloud_s3_enabled is defined and nextcloud_s3_enabled %}
   'objectstore' => array(
           'class' => 'OC\\Files\\ObjectStore\\S3',
           'arguments' => array(
-                  'bucket' => '{% nextcloud_s3_bucket %}',
+                  'bucket' => '{{ nextcloud_s3_bucket }}',
                   'autocreate' => true,
-                  'key'    => '{% nextcloud_s3_key %}',
-                  'secret' => '{% nextcloud_s3_secret %}',
-                  'hostname' => '{% nextcloud_s3_hostname %}',
+                  'key'    => '{{ nextcloud_s3_key }}',
+                  'secret' => '{{ nextcloud_s3_secret }}',
+                  'hostname' => '{{ nextcloud_s3_hostname }}',
                   'port' => 1234,
                   'use_ssl' => true,
                   'region' => 'optional',
