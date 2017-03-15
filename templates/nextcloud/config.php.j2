@@ -35,11 +35,11 @@ $CONFIG = array (
                   'key'    => '{{ nextcloud_s3_key }}',
                   'secret' => '{{ nextcloud_s3_secret }}',
                   'hostname' => '{{ nextcloud_s3_hostname }}',
-                  'port' => 1234,
+                  // 'port' => 443,
                   'use_ssl' => true,
-                  'region' => 'optional',
+                  // 'region' => 'optional',
                   // required for some non amazon s3 implementations
-                  'use_path_style'=>true
+                  'use_path_style'=>false
           ),
   ),
 {% endif %}
