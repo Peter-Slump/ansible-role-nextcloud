@@ -28,41 +28,10 @@
     src: /tmp/nextcloud-{{ nextcloud_version }}.tar.bz2
     dest: '{{ nextcloud_deploy_path }}'
     copy: False
-    owner: root
-    group: "{{ nextcloud_group }}"
-    mode: 'u+rwX,g-w,o-rwx'
-    creates: '{{ nextcloud_deploy_path }}/nextcloud/version.php'
-  tags:
-    - nextcloud
-    - deploy
-
-- name: deploy | Make {{ nextcloud_user }} owner some folders
-  file:
-    path: '{{ item }}'
     owner: "{{ nextcloud_user }}"
     group: "{{ nextcloud_group }}"
     mode: 'u+rwX,g-w,o-rwx'
-    recurse: True
-    state: directory
-  with_items:
-    - '{{ nextcloud_deploy_path }}/nextcloud/apps/'
-    - '{{ nextcloud_deploy_path }}/nextcloud/config/'
-    - '{{ nextcloud_deploy_path }}/nextcloud/data/'
-    - '{{ nextcloud_deploy_path }}/nextcloud/themes/'
-    - '{{ nextcloud_deploy_path }}/nextcloud/assets/'
-  tags:
-    - nextcloud
-    - deploy
-
-- name: deploy | Set correct permissions for .htaccess files
-  file:
-    path: '{{ item }}'
-    owner: root
-    group: "{{ nextcloud_group }}"
-    mode: 0644
-    state: file
-  with_items:
-    - '{{ nextcloud_deploy_path }}/nextcloud/.htaccess'
+    creates: '{{ nextcloud_deploy_path }}/nextcloud/version.php'
   tags:
     - nextcloud
     - deploy
